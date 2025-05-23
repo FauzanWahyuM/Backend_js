@@ -1,0 +1,38 @@
+# order-service/.github/workflows/order-service.yml
+name: Order Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'order-service/**'
+  pull_request:
+    paths:
+      - 'order-service/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          cd order-service
+          npm install
+
+      - name: Run tests
+        run: |
+          cd order-service
+          npm test
+
+      - name: Deploy (optional)
+        run: |
+          cd order-service
+          npm run deploy

@@ -1,0 +1,38 @@
+# auth-service/.github/workflows/auth-service.yml
+name: Auth Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'auth-service/**'  # Trigger only if there are changes to the auth-service folder
+  pull_request:
+    paths:
+      - 'auth-service/**'  # Trigger only for PRs that involve the auth-service folder
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          cd auth-service
+          npm install
+
+      - name: Run tests
+        run: |
+          cd auth-service
+          npm test
+
+      - name: Deploy (optional)
+        run: |
+          cd auth-service
+          npm run deploy

@@ -1,0 +1,38 @@
+# product-service/.github/workflows/product-service.yml
+name: Product Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'product-service/**'
+  pull_request:
+    paths:
+      - 'product-service/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          cd product-service
+          npm install
+
+      - name: Run tests
+        run: |
+          cd product-service
+          npm test
+
+      - name: Deploy (optional)
+        run: |
+          cd product-service
+          npm run deploy
