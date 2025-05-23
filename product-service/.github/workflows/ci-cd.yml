@@ -1,0 +1,32 @@
+name: CI/CD for Product Service
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Lint
+      run: echo "Linting can be added here."
+
+    - name: Build Docker image
+      run: docker build -t product-service .
+
+    - name: Simulate Deployment
+      run: echo "Deploy to your Docker host or cloud here."

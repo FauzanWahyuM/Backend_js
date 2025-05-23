@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mongodb-auth:
+    image: mongo
+    container_name: mongodb-auth
+    ports:
+      - "27017:27017"
+    volumes:
+      - authdata:/data/db
+
+  mongodb-product:
+    image: mongo
+    container_name: mongodb-product
+    ports:
+      - "27018:27017"
+    volumes:
+      - productdata:/data/db
+
+  mongodb-order:
+    image: mongo
+    container_name: mongodb-order
+    ports:
+      - "27019:27017"
+    volumes:
+      - orderdata:/data/db
+
+  auth-service:
+    build:
+      context: ./auth-service
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://mongodb-auth:27017/auth_service
+      - PORT=5001
+    depends_on:
+      - mongodb-auth
+
+  product-service:
+    build:
+      context: ./product-service
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGO_URI=mongodb://mongodb-product:27017/product_service
+      - PORT=5002
+    depends_on:
+      - mongodb-product
+
+  order-service:
+    build:
+      context: ./order-service
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGO_URI=mongodb://mongodb-order:27017/order_service
+      - PORT=5003
+    depends_on:
+      - mongodb-order
+
+volumes:
+  authdata:
+  productdata:
+  orderdata:
